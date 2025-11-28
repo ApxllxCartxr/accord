@@ -1,0 +1,11 @@
+-- CreateEnum
+CREATE TYPE "ClientStatus" AS ENUM ('LEAD', 'CONTACTED', 'QUALIFIED', 'PROPOSAL_MADE', 'WON', 'LOST', 'FRIDGE');
+
+-- AlterTable
+ALTER TABLE "Client" ADD COLUMN     "ownerId" TEXT,
+ADD COLUMN     "status" "ClientStatus" NOT NULL DEFAULT 'LEAD',
+ADD COLUMN     "tagline" TEXT,
+ADD COLUMN     "value" DOUBLE PRECISION NOT NULL DEFAULT 0;
+
+-- AddForeignKey
+ALTER TABLE "Client" ADD CONSTRAINT "Client_ownerId_fkey" FOREIGN KEY ("ownerId") REFERENCES "User"("id") ON DELETE SET NULL ON UPDATE CASCADE;

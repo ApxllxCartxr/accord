@@ -35,7 +35,11 @@ export async function inviteMember(prevState: unknown, formData: FormData) {
             include: { memberships: true }
         })
 
-        const membership = currentUser?.memberships.find(m => m.organizationId === orgId)
+        if (!currentUser) {
+            return { message: "User not found" }
+        }
+
+        const membership = currentUser.memberships.find(m => m.organizationId === orgId)
         if (!membership || (membership.role !== "OWNER" && membership.role !== "ADMIN")) {
             return { message: "Unauthorized" }
         }
@@ -138,11 +142,13 @@ export async function updateMemberRole(prevState: unknown, formData: FormData) {
 
     const { membershipId, newRole, orgId } = validatedFields.data
 
+    const userEmail = session.user.email
+
     try {
         await prisma.$transaction(async (tx) => {
             // Get current user's membership
             const currentUser = await tx.user.findUnique({
-                where: { email: session.user.email },
+                where: { email: userEmail },
                 include: { memberships: true }
             })
 
@@ -150,7 +156,7 @@ export async function updateMemberRole(prevState: unknown, formData: FormData) {
                 throw new Error("User not found")
             }
 
-            const currentUserMembership = currentUser.memberships.find(m => m.organizationId === orgId)
+            const currentUserMembership = currentUser.memberships.find((m: any) => m.organizationId === orgId)
 
             // Check if current user has permission (must be OWNER or ADMIN)
             if (!currentUserMembership || (currentUserMembership.role !== "OWNER" && currentUserMembership.role !== "ADMIN")) {

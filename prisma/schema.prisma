@@ -25,8 +25,13 @@ model User {
   // CRM Relations
   memberships OrganizationUser[]
   ledTeams    Team[]             @relation("TeamLead")
-  tasks       Task[]             @relation("TaskAssignee")
+  tasks       Task[]             @relation("TaskAssignees")
   sentInvites OrganizationInvite[]
+  ownedClients Client[]
+  clientComments ClientComment[]
+  projectComments ProjectComment[]
+  clientHistory  ClientHistory[]
+  teamMemberships TeamMember[]
 }
 
 model Account {
@@ -91,6 +96,7 @@ model Organization {
   projects Project[]
   tasks    Task[]
   invites  OrganizationInvite[]
+  contracts Contract[]
 }
 
 model OrganizationUser {
@@ -126,6 +132,7 @@ model Team {
   // Actually, to keep it simple and under 200 lines logic, maybe just a list of user IDs?
   // Let's stick to a simple relation.
   members      TeamMember[]
+  tasks        Task[]
 }
 
 model TeamMember {
@@ -134,11 +141,19 @@ model TeamMember {
   userId String
   
   team Team @relation(fields: [teamId], references: [id], onDelete: Cascade)
-  // User relation is tricky if we want to ensure they are in the Org. 
-  // For now just link to User.
-  // We can enforce org membership in application logic.
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
   
   @@unique([teamId, userId])
+}
+
+enum ClientStatus {
+  LEAD
+  CONTACTED
+  QUALIFIED
+  PROPOSAL_MADE
+  WON
+  LOST
+  FRIDGE
 }
 
 model Client {
@@ -146,12 +161,58 @@ model Client {
   name           String
   email          String?
   phone          String?
+  tagline        String?
+  value          Float        @default(0)
+  status         ClientStatus @default(LEAD)
   organizationId String
+  ownerId        String?
   createdAt      DateTime     @default(now())
   updatedAt      DateTime     @updatedAt
 
   organization Organization @relation(fields: [organizationId], references: [id], onDelete: Cascade)
-  projects     Project[]
+  owner        User?        @relation(fields: [ownerId], references: [id])
+
+  // New fields
+  location  String?
+  website   String?
+  image     String?
+  notes     String?
+
+  projects Project[]
+  comments ClientComment[]
+  history  ClientHistory[]
+  contracts Contract[]
+}
+
+model ClientComment {
+  id        String   @id @default(cuid())
+  content   String
+  
+  clientId  String
+  client    Client   @relation(fields: [clientId], references: [id], onDelete: Cascade)
+  
+  userId    String
+  user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
+model ClientHistory {
+  id        String   @id @default(cuid())
+  
+  clientId  String
+  client    Client   @relation(fields: [clientId], references: [id], onDelete: Cascade)
+  
+  userId    String
+  user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  
+  fromStatus ClientStatus
+  toStatus   ClientStatus
+  
+  notes     String?
+  
+  createdAt DateTime @default(now())
 }
 
 enum ProjectStatus {
@@ -167,36 +228,68 @@ model Project {
   description    String?
   status         ProjectStatus @default(ACTIVE)
   clientId       String?
+  contractId     String?
   organizationId String
   createdAt      DateTime      @default(now())
   updatedAt      DateTime      @updatedAt
 
-  organization Organization @relation(fields: [organizationId], references: [id], onDelete: Cascade)
-  client       Client?      @relation(fields: [clientId], references: [id])
+  organization Organization    @relation(fields: [organizationId], references: [id], onDelete: Cascade)
+  client       Client?         @relation(fields: [clientId], references: [id])
+  contract     Contract?       @relation(fields: [contractId], references: [id])
   tasks        Task[]
+  comments     ProjectComment[]
+}
+
+model ProjectComment {
+  id        String   @id @default(cuid())
+  content   String
+  
+  projectId String
+  project   Project  @relation(fields: [projectId], references: [id], onDelete: Cascade)
+  
+  userId    String
+  user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
 }
 
 enum TaskStatus {
-  TODO
-  IN_PROGRESS
-  REVIEW
-  DONE
+  NOT_STARTED
+  PENDING
+  UNDER_REVIEW
+  COMPLETED
+}
+
+enum TaskPriority {
+  LOW
+  MEDIUM
+  HIGH
+  URGENT
 }
 
 model Task {
-  id             String     @id @default(cuid())
+  id             String       @id @default(cuid())
   title          String
   description    String?
-  status         TaskStatus @default(TODO)
-  assigneeId     String?
-  projectId      String?
+  status         TaskStatus   @default(NOT_STARTED)
+  priority       TaskPriority @default(MEDIUM)
+  dueDate        DateTime?
+  
+  // Relations
   organizationId String
-  createdAt      DateTime   @default(now())
-  updatedAt      DateTime   @updatedAt
-
-  organization Organization @relation(fields: [organizationId], references: [id], onDelete: Cascade)
-  project      Project?     @relation(fields: [projectId], references: [id])
-  assignee     User?        @relation("TaskAssignee", fields: [assigneeId], references: [id])
+  organization   Organization @relation(fields: [organizationId], references: [id], onDelete: Cascade)
+  
+  projectId      String?
+  project        Project?     @relation(fields: [projectId], references: [id])
+  
+  teamId         String?
+  team           Team?        @relation(fields: [teamId], references: [id], onDelete: Cascade)
+  
+  assignees      User[]       @relation("TaskAssignees")
+  
+  createdAt      DateTime     @default(now())
+  updatedAt      DateTime     @updatedAt
 }
 
 model OrganizationInvite {
@@ -213,4 +306,37 @@ model OrganizationInvite {
   inviter        User         @relation(fields: [inviterId], references: [id], onDelete: Cascade)
 
   @@unique([organizationId, email])
+}
+
+enum ContractStatus {
+  DRAFT
+  SENT
+  SIGNED
+  REJECTED
+}
+
+model Contract {
+  id             String         @id @default(cuid())
+  name           String
+  status         ContractStatus @default(DRAFT)
+  value          Float          @default(0)
+  startDate      DateTime?
+  endDate        DateTime?
+  content        String?        @db.Text
+  fileUrl        String?
+  
+  signerName     String?
+  signerPhone    String?
+  signerEmail    String?
+  
+  clientId       String
+  client         Client         @relation(fields: [clientId], references: [id], onDelete: Cascade)
+  
+  projects       Project[]
+  
+  organizationId String
+  organization   Organization   @relation(fields: [organizationId], references: [id], onDelete: Cascade)
+  
+  createdAt      DateTime       @default(now())
+  updatedAt      DateTime       @updatedAt
 }

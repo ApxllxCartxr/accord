@@ -53,7 +53,7 @@ export default async function InvitePage({ params }: { params: Promise<{ token: 
             const existingMember = await tx.organizationUser.findUnique({
                 where: {
                     userId_organizationId: {
-                        userId: session.user.id!,
+                        userId: session.user?.id!,
                         organizationId: invite.organizationId
                     }
                 }
@@ -62,7 +62,7 @@ export default async function InvitePage({ params }: { params: Promise<{ token: 
             if (!existingMember) {
                 await tx.organizationUser.create({
                     data: {
-                        userId: session.user.id!,
+                        userId: session.user?.id!,
                         organizationId: invite.organizationId,
                         role: invite.role
                     }

@@ -24,18 +24,18 @@ export default async function DashboardLayout({
     const org = user.memberships[0].organization
 
     return (
-        <div className="flex h-screen overflow-hidden bg-[#F2F1EF]">
+        <div className="flex h-screen overflow-hidden bg-background">
             <Sidebar orgName={org.name} orgPlan="Free Plan" orgLogo={org.logo} />
 
             <div className="flex flex-col flex-1 overflow-hidden">
                 {/* Top bar with breadcrumbs - same height as OrgSwitcher */}
-                <div className="h-[65px] bg-[#F2F1EF] flex items-center px-6 border-b border-[#E0E0E0]">
+                <div className="h-[65px] bg-background flex items-center px-6 border-b border-border">
                     <Breadcrumbs />
                 </div>
 
                 {/* Main content area with gap */}
-                <div className="flex-1 overflow-auto p-4">
-                    <div className="h-full bg-[#F8F8F8] rounded-lg border border-[#E0E0E0] p-6 overflow-auto">
+                <div className="flex-1 overflow-hidden p-2">
+                    <div className="h-full bg-[var(--content-background)] rounded-lg border border-border p-4 overflow-hidden">
                         {children}
                     </div>
                 </div>
