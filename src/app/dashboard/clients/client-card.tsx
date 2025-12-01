@@ -3,6 +3,7 @@
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar"
 import { Badge } from "@/components/ui/badge"
+import { StatusBadge } from "@/components/ui/status-badge"
 import { ClientWithDetails } from "@/types"
 import Link from "next/link"
 import { formatDistanceToNow } from "date-fns"
@@ -31,13 +32,7 @@ export function ClientCard({ client }: ClientCardProps) {
                             )}
                         </div>
                     </div>
-                    <Badge variant={
-                        client.status === 'WON' ? 'default' :
-                            client.status === 'LOST' ? 'destructive' :
-                                'secondary'
-                    }>
-                        {client.status.toLowerCase()}
-                    </Badge>
+                    <StatusBadge status={client.status} />
                 </CardHeader>
                 <CardContent className="flex-1 flex flex-col justify-end pt-2">
                     <div className="space-y-3">

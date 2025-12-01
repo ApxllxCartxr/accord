@@ -9,16 +9,17 @@ const buttonVariants = cva(
   {
     variants: {
       variant: {
-        default: "bg-primary text-primary-foreground hover:bg-primary/90",
+        default: "bg-gradient-to-b from-primary/90 to-primary text-primary-foreground shadow-[0px_1px_0px_0px_rgba(255,255,255,0.2)_inset,0px_2px_2px_0px_rgba(0,0,0,0.2)] hover:brightness-110 active:scale-[0.98] active:shadow-none transition-all",
         destructive:
-          "bg-destructive text-white hover:bg-destructive/90 focus-visible:ring-destructive/20 dark:focus-visible:ring-destructive/40 dark:bg-destructive/60",
+          "bg-gradient-to-b from-destructive/90 to-destructive text-white shadow-[0px_1px_0px_0px_rgba(255,255,255,0.2)_inset,0px_2px_2px_0px_rgba(0,0,0,0.2)] hover:bg-destructive/90 focus-visible:ring-destructive/20 dark:focus-visible:ring-destructive/40 dark:bg-destructive/60 active:scale-[0.98] active:shadow-none transition-all",
         outline:
-          "border bg-background shadow-xs hover:bg-accent hover:text-accent-foreground dark:bg-input/30 dark:border-input dark:hover:bg-input/50",
+          "border border-input bg-background shadow-[0px_1px_0px_0px_rgba(0,0,0,0.05)] hover:bg-accent hover:text-accent-foreground active:scale-[0.98] active:translate-y-[1px] transition-all dark:bg-input/30 dark:border-input dark:hover:bg-input/50",
         secondary:
-          "bg-secondary text-secondary-foreground hover:bg-secondary/80",
+          "bg-gradient-to-b from-secondary/80 to-secondary text-secondary-foreground shadow-[0px_1px_0px_0px_rgba(255,255,255,0.2)_inset,0px_1px_1px_0px_rgba(0,0,0,0.05)] hover:bg-secondary/80 active:scale-[0.98] active:shadow-none transition-all",
         ghost:
-          "hover:bg-accent hover:text-accent-foreground dark:hover:bg-accent/50",
+          "hover:bg-accent hover:text-accent-foreground active:scale-[0.98] transition-all dark:hover:bg-accent/50",
         link: "text-primary underline-offset-4 hover:underline",
+        create: "bg-gradient-to-b from-[#333333] to-[#1A1A1A] text-white border border-[#404040] shadow-[0px_1px_0px_0px_rgba(255,255,255,0.1)_inset,0px_2px_4px_0px_rgba(0,0,0,0.4)] hover:brightness-110 active:scale-[0.98] active:shadow-none active:translate-y-[1px] transition-all dark:bg-gradient-to-b dark:from-[#FFFFFF] dark:to-[#E6E6E6] dark:text-black dark:border-[#CCCCCC] dark:shadow-[0px_1px_0px_0px_rgba(255,255,255,1)_inset,0px_2px_4px_0px_rgba(0,0,0,0.2)] dark:hover:brightness-95",
       },
       size: {
         default: "h-9 px-4 py-2 has-[>svg]:px-3",

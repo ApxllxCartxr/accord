@@ -86,7 +86,7 @@ export function NewTaskDialog({ teamId, organizationId, members }: NewTaskDialog
     return (
         <Dialog open={open} onOpenChange={setOpen}>
             <DialogTrigger asChild>
-                <Button>
+                <Button variant="create">
                     <Plus className="mr-2 h-4 w-4" />
                     New Task
                 </Button>
@@ -202,7 +202,7 @@ export function NewTaskDialog({ teamId, organizationId, members }: NewTaskDialog
                         <Button type="button" variant="outline" onClick={() => setOpen(false)}>
                             Cancel
                         </Button>
-                        <Button type="submit" disabled={loading || !formData.title.trim()}>
+                        <Button type="submit" variant="create" disabled={loading || !formData.title.trim()}>
                             {loading && <Loader2 className="mr-2 h-4 w-4 animate-spin" />}
                             Create Task
                         </Button>

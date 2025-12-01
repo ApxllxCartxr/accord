@@ -10,6 +10,7 @@ import { Calendar, MessageSquare, MoreHorizontal, Crosshair, Target, CheckCircle
 import { format } from "date-fns"
 import { cn } from "@/lib/utils"
 import { Badge } from "@/components/ui/badge"
+import { StatusBadge } from "@/components/ui/status-badge"
 
 // Extended Task type to include assignees and team
 type TaskWithAssigneesAndTeam = Task & {
@@ -145,12 +146,7 @@ function DraggableTaskCard({ task }: { task: TaskWithAssigneesAndTeam }) {
 }
 
 function TaskCard({ task }: { task: TaskWithAssigneesAndTeam }) {
-    const priorityColor = {
-        LOW: "bg-blue-100 text-blue-700 dark:bg-blue-900/30 dark:text-blue-300",
-        MEDIUM: "bg-gray-100 text-gray-700 dark:bg-gray-800 dark:text-gray-300",
-        HIGH: "bg-orange-100 text-orange-700 dark:bg-orange-900/30 dark:text-orange-300",
-        URGENT: "bg-red-100 text-red-700 dark:bg-red-900/30 dark:text-red-300",
-    }[task.priority]
+
 
     return (
         <div className="bg-card border border-border rounded-xl p-4 shadow-sm hover:shadow-md transition-shadow cursor-grab active:cursor-grabbing group">
@@ -162,9 +158,7 @@ function TaskCard({ task }: { task: TaskWithAssigneesAndTeam }) {
                             {task.team.name}
                         </Badge>
                     )}
-                    <span className={cn("text-[10px] px-1.5 py-0.5 rounded font-medium uppercase", priorityColor)}>
-                        {task.priority}
-                    </span>
+                    <StatusBadge status={task.priority} className="text-[10px] px-1.5 py-0.5 h-auto" />
                 </div>
             </div>
 
@@ -181,8 +175,10 @@ function TaskCard({ task }: { task: TaskWithAssigneesAndTeam }) {
             <div className="flex items-center gap-3 mb-4">
                 {task.dueDate && (
                     <div className={cn(
-                        "flex items-center gap-1.5 text-xs px-2 py-1 rounded",
-                        new Date(task.dueDate) < new Date() ? "bg-red-50 text-red-600 dark:bg-red-900/10" : "bg-muted text-muted-foreground"
+                        "flex items-center gap-1.5 text-xs px-2.5 py-1 rounded-md font-medium ring-1 ring-inset",
+                        new Date(task.dueDate) < new Date()
+                            ? "bg-red-50 text-red-600 ring-red-500/10 dark:bg-red-400/10 dark:text-red-400 dark:ring-red-400/20"
+                            : "bg-gray-50 text-gray-600 ring-gray-500/10 dark:bg-gray-400/10 dark:text-gray-400 dark:ring-gray-400/20"
                     )}>
                         <Calendar className="h-3 w-3" />
                         <span>{format(new Date(task.dueDate), "MMM d")}</span>

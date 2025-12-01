@@ -7,6 +7,7 @@ import { ContractCard } from "../../contracts/contract-card"
 import { ClientCard } from "../../clients/client-card"
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs"
 import { Badge } from "@/components/ui/badge"
+import { StatusBadge } from "@/components/ui/status-badge"
 import { Button } from "@/components/ui/button"
 import { Calendar, CheckSquare, FileText, ArrowLeft, MoreHorizontal } from "lucide-react"
 import Link from "next/link"
@@ -26,12 +27,7 @@ export default async function ProjectDetailsPage({ params }: { params: Promise<{
         redirect("/dashboard/projects")
     }
 
-    const statusColors = {
-        ACTIVE: "bg-green-100 text-green-700 dark:bg-green-900/30 dark:text-green-300",
-        COMPLETED: "bg-blue-100 text-blue-700 dark:bg-blue-900/30 dark:text-blue-300",
-        ON_HOLD: "bg-orange-100 text-orange-700 dark:bg-orange-900/30 dark:text-orange-300",
-        ARCHIVED: "bg-gray-100 text-gray-700 dark:bg-gray-800 dark:text-gray-300",
-    }
+
 
     return (
         <div className="flex flex-col h-[calc(100vh-2rem)] gap-6">
@@ -46,9 +42,7 @@ export default async function ProjectDetailsPage({ params }: { params: Promise<{
                     </div>
                     <div className="flex items-center gap-3">
                         <h1 className="text-2xl font-bold tracking-tight">{project.name}</h1>
-                        <Badge variant="secondary" className={statusColors[project.status]}>
-                            {project.status.replace("_", " ")}
-                        </Badge>
+                        <StatusBadge status={project.status} />
                     </div>
                 </div>
                 <div className="flex items-center gap-2">

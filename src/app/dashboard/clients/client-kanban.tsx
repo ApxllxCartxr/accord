@@ -5,6 +5,7 @@ import { Client } from "@prisma/client"
 import { DndContext, DragEndEvent, DragOverlay, DragStartEvent, useDraggable, useDroppable } from "@dnd-kit/core"
 import { updateClientStatus } from "./actions"
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar"
+import { Button } from "@/components/ui/button"
 import { MoreVertical } from "lucide-react"
 import Link from "next/link"
 import { ClientWithDetails, ClientStatus } from "@/types"
@@ -139,12 +140,12 @@ function ClientCard({ client, color }: { client: ClientWithDetails, color?: stri
                         )}
                         <span className="text-xs font-medium text-muted-foreground truncate max-w-[120px]">{client.owner?.name}</span>
                     </div>
-                    <button className="text-muted-foreground hover:text-foreground shrink-0" onClick={(e) => {
+                    <Button variant="ghost" size="icon" className="h-6 w-6 shrink-0 text-muted-foreground hover:text-foreground" onClick={(e) => {
                         e.preventDefault()
                         // Add menu logic here later
                     }}>
                         <MoreVertical className="h-4 w-4" />
-                    </button>
+                    </Button>
                 </div>
 
                 {/* Company Name & Logo */}

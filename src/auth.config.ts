@@ -1,7 +1,17 @@
 import type { NextAuthConfig } from "next-auth"
-import Email from "next-auth/providers/email"
-
 export default {
+    session: { strategy: "jwt" },
+    cookies: {
+        sessionToken: {
+            name: `next-auth.session-token`,
+            options: {
+                httpOnly: true,
+                sameSite: "lax",
+                path: "/",
+                secure: process.env.NODE_ENV === "production" && process.env.NEXTAUTH_URL?.startsWith("https://"),
+            },
+        },
+    },
     providers: [],
     pages: {
         signIn: '/auth/signin',

@@ -89,7 +89,7 @@ export function NewContractDialog({ clients, organizationId, defaultClientId }: 
     return (
         <Dialog open={open} onOpenChange={setOpen}>
             <DialogTrigger asChild>
-                <Button>
+                <Button variant="create">
                     <Plus className="mr-2 h-4 w-4" />
                     New Contract
                 </Button>
@@ -206,7 +206,7 @@ export function NewContractDialog({ clients, organizationId, defaultClientId }: 
                         <Button type="button" variant="outline" onClick={() => setOpen(false)}>
                             Cancel
                         </Button>
-                        <Button type="submit" disabled={loading || !formData.clientId}>
+                        <Button type="submit" variant="create" disabled={loading || !formData.clientId}>
                             {loading && <Loader2 className="mr-2 h-4 w-4 animate-spin" />}
                             Create Contract
                         </Button>

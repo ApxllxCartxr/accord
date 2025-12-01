@@ -46,7 +46,7 @@ export function NewTeamDialog({ organizationId }: NewTeamDialogProps) {
     return (
         <Dialog open={open} onOpenChange={setOpen}>
             <DialogTrigger asChild>
-                <Button>
+                <Button variant="create">
                     <Plus className="mr-2 h-4 w-4" />
                     New Team
                 </Button>
@@ -75,7 +75,7 @@ export function NewTeamDialog({ organizationId }: NewTeamDialogProps) {
                         <Button type="button" variant="outline" onClick={() => setOpen(false)}>
                             Cancel
                         </Button>
-                        <Button type="submit" disabled={loading || !name.trim()}>
+                        <Button type="submit" variant="create" disabled={loading || !name.trim()}>
                             {loading && <Loader2 className="mr-2 h-4 w-4 animate-spin" />}
                             Create Team
                         </Button>

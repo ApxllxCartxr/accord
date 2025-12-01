@@ -3,16 +3,12 @@ import { Button } from "@/components/ui/button"
 import { DollarSign, Calendar, Mail, Trash2 } from "lucide-react"
 import { formatDistanceToNow } from "date-fns"
 import { Badge } from "@/components/ui/badge"
+import { StatusBadge } from "@/components/ui/status-badge"
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar"
 import { deleteContract, sendContractEmail } from "./actions"
 
 export function ContractCard({ contract }: { contract: any }) {
-    const statusColors = {
-        DRAFT: "bg-gray-100 text-gray-700 dark:bg-gray-800 dark:text-gray-300",
-        SENT: "bg-blue-100 text-blue-700 dark:bg-blue-900/30 dark:text-blue-300",
-        SIGNED: "bg-green-100 text-green-700 dark:bg-green-900/30 dark:text-green-300",
-        REJECTED: "bg-red-100 text-red-700 dark:bg-red-900/30 dark:text-red-300",
-    }
+
 
     return (
         <Card className="flex flex-col h-full hover:shadow-md transition-shadow">
@@ -30,9 +26,7 @@ export function ContractCard({ contract }: { contract: any }) {
                             <span className="truncate max-w-[150px]">{contract.client.name}</span>
                         </div>
                     </div>
-                    <Badge variant="secondary" className={`${statusColors[contract.status as keyof typeof statusColors]} border-0`}>
-                        {contract.status}
-                    </Badge>
+                    <StatusBadge status={contract.status} />
                 </div>
             </CardHeader>
             <CardContent className="flex-1 flex flex-col gap-4">

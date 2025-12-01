@@ -3,6 +3,7 @@
 import { Project, ProjectStatus } from "@prisma/client"
 import { Card, CardContent, CardFooter, CardHeader, CardTitle } from "@/components/ui/card"
 import { Badge } from "@/components/ui/badge"
+import { StatusBadge } from "@/components/ui/status-badge"
 import { Button } from "@/components/ui/button"
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar"
 import { FolderKanban, MoreHorizontal, Calendar, CheckSquare, FileText, User } from "lucide-react"
@@ -28,12 +29,7 @@ interface ProjectCardProps {
 }
 
 export function ProjectCard({ project }: ProjectCardProps) {
-    const statusColors = {
-        ACTIVE: "bg-green-100 text-green-700 dark:bg-green-900/30 dark:text-green-300",
-        COMPLETED: "bg-blue-100 text-blue-700 dark:bg-blue-900/30 dark:text-blue-300",
-        ON_HOLD: "bg-orange-100 text-orange-700 dark:bg-orange-900/30 dark:text-orange-300",
-        ARCHIVED: "bg-gray-100 text-gray-700 dark:bg-gray-800 dark:text-gray-300",
-    }
+
 
     return (
         <Card className="hover:shadow-md transition-all group">
@@ -41,9 +37,7 @@ export function ProjectCard({ project }: ProjectCardProps) {
                 <div className="flex items-start justify-between">
                     <div className="space-y-1">
                         <div className="flex items-center gap-2">
-                            <Badge variant="secondary" className={cn("font-medium", statusColors[project.status])}>
-                                {project.status.replace("_", " ")}
-                            </Badge>
+                            <StatusBadge status={project.status} />
                             {project.contract && (
                                 <Badge variant="outline" className="text-xs font-normal flex items-center gap-1">
                                     <FileText className="h-3 w-3" />

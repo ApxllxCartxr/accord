@@ -74,7 +74,7 @@ export function NewClientDialog({ organizationId, currentUserId }: NewClientDial
     return (
         <Dialog open={open} onOpenChange={setOpen}>
             <DialogTrigger asChild>
-                <Button className="bg-primary text-primary-foreground hover:bg-primary/90">
+                <Button variant="create">
                     <Plus className="mr-2 h-4 w-4" />
                     Add Client
                 </Button>
@@ -142,7 +142,7 @@ export function NewClientDialog({ organizationId, currentUserId }: NewClientDial
                         </div>
                     </div>
                     <DialogFooter>
-                        <Button type="submit" disabled={loading}>
+                        <Button type="submit" variant="create" disabled={loading}>
                             {loading ? "Creating..." : "Create Client"}
                         </Button>
                     </DialogFooter>

@@ -90,14 +90,16 @@ export function OrgLogoUpload({ orgId, currentLogo }: OrgLogoUploadProps) {
                                 height={100}
                                 className="rounded-lg border border-[#E5E5E5]"
                             />
-                            <button
+                            <Button
                                 onClick={handleRemoveLogo}
                                 disabled={isUploading}
-                                className="absolute -top-2 -right-2 p-1 bg-red-500 text-white rounded-full hover:bg-red-600 transition-colors"
+                                variant="destructive"
+                                size="icon"
+                                className="absolute -top-2 -right-2 h-6 w-6 rounded-full p-0 shadow-md"
                                 aria-label="Remove logo"
                             >
-                                <X className="h-4 w-4" />
-                            </button>
+                                <X className="h-3 w-3" />
+                            </Button>
                         </div>
                     ) : (
                         <div className="w-[100px] h-[100px] rounded-lg border-2 border-dashed border-[#E5E5E5] flex items-center justify-center bg-white">

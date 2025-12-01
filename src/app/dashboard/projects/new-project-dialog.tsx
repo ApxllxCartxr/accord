@@ -104,7 +104,7 @@ export function NewProjectDialog({ organizationId }: NewProjectDialogProps) {
     return (
         <Dialog open={open} onOpenChange={setOpen}>
             <DialogTrigger asChild>
-                <Button>
+                <Button variant="create">
                     <Plus className="mr-2 h-4 w-4" />
                     New Project
                 </Button>
@@ -205,7 +205,7 @@ export function NewProjectDialog({ organizationId }: NewProjectDialogProps) {
                         <Button type="button" variant="outline" onClick={() => setOpen(false)}>
                             Cancel
                         </Button>
-                        <Button type="submit" disabled={loading || !formData.name.trim()}>
+                        <Button type="submit" variant="create" disabled={loading || !formData.name.trim()}>
                             {loading && <Loader2 className="mr-2 h-4 w-4 animate-spin" />}
                             Create Project
                         </Button>

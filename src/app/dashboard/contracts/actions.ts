@@ -25,14 +25,16 @@ export async function createContract(data: {
     if (!session?.user?.email) throw new Error("Unauthorized")
 
     // Verify user belongs to organization
-    const membership = await prisma.organizationUser.findFirst({
-        where: {
-            userId: session.user.id,
-            organizationId: data.organizationId
+    const user = await prisma.user.findUnique({
+        where: { email: session.user.email },
+        include: {
+            memberships: {
+                where: { organizationId: data.organizationId }
+            }
         }
     })
 
-    if (!membership) throw new Error("Unauthorized")
+    if (!user || !user.memberships[0]) throw new Error("Unauthorized")
 
     const contract = await prisma.contract.create({
         data: {

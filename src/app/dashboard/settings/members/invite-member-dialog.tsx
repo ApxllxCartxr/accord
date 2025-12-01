@@ -42,7 +42,7 @@ export function InviteMemberDialog({ orgId }: { orgId: string }) {
     return (
         <Dialog open={open} onOpenChange={setOpen}>
             <DialogTrigger asChild>
-                <Button>
+                <Button variant="create">
                     <Plus className="mr-2 h-4 w-4" />
                     Invite Member
                 </Button>
@@ -90,7 +90,7 @@ export function InviteMemberDialog({ orgId }: { orgId: string }) {
                         </p>
                     )}
                     <DialogFooter>
-                        <Button type="submit" disabled={isPending}>
+                        <Button type="submit" variant="create" disabled={isPending}>
                             {isPending ? "Sending..." : "Send Invitation"}
                         </Button>
                     </DialogFooter>

@@ -11,6 +11,7 @@ import {
 import { Task, TaskPriority, TaskStatus } from "@prisma/client"
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar"
 import { Badge } from "@/components/ui/badge"
+import { StatusBadge } from "@/components/ui/status-badge"
 import { format } from "date-fns"
 import { cn } from "@/lib/utils"
 
@@ -51,12 +52,10 @@ export function TeamTasksTable({ tasks }: TeamTasksTableProps) {
                             <TableRow key={task.id}>
                                 <TableCell className="font-medium">{task.title}</TableCell>
                                 <TableCell>
-                                    <Badge variant="outline">{task.status.replace("_", " ")}</Badge>
+                                    <StatusBadge status={task.status} />
                                 </TableCell>
                                 <TableCell>
-                                    <Badge variant={task.priority === "URGENT" ? "destructive" : "secondary"}>
-                                        {task.priority}
-                                    </Badge>
+                                    <StatusBadge status={task.priority} />
                                 </TableCell>
                                 <TableCell>
                                     <div className="flex -space-x-2">

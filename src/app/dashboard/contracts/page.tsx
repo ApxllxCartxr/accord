@@ -22,12 +22,18 @@ export default async function ContractsPage() {
     const session = await auth()
     if (!session?.user?.email) redirect("/sign-in")
 
-    const membership = await prisma.organizationUser.findFirst({
-        where: { userId: session.user.id },
-        select: { organizationId: true }
+    const user = await prisma.user.findUnique({
+        where: { email: session.user.email },
+        include: {
+            memberships: true
+        }
     })
 
-    if (!membership) redirect("/dashboard")
+    if (!user) redirect("/auth/signin")
+
+    const membership = user.memberships[0]
+
+    if (!membership) redirect("/onboarding")
 
     const contracts = await getContracts(membership.organizationId)
     const clients = await getClients(membership.organizationId)
